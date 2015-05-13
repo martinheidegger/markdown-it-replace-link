@@ -1,0 +1,26 @@
+{
+  "name": "markdown-it-replace-link",
+  "main": "index.js",
+  "version": "1.0.0",
+  "homepage": "https://github.com/martinheidegger/markdown-it-replace-link",
+  "authors": [
+    "Martin Heidegger <martin.heidegger@gmail.com>"
+  ],
+  "description": "Adds syntax for an automatically generated table of contents to markdown-it markdown parser.",
+  "moduleType": [
+    "amd"
+  ],
+  "keywords": [
+    "markdown",
+    "markdown-it"
+  ],
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {}
+}

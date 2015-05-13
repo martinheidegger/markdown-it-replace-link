@@ -1,0 +1,42 @@
+{
+  "name": "markdown-it-replace-link",
+  "version": "1.0.0",
+  "description": "markdown-it plugin for replacing links (image & text) in the markdown document.",
+  "main": "index.js",
+  "scripts": {
+    "test": "npm run lint; npm run unit",
+    "unit": "mocha -R spec",
+    "lint": "eslint --reset .",
+    "browserify": "(echo \"$HEADER\"; browserify ./ -s markdownitReplaceLink) > dist/markdown-it-replace-link.js",
+    "dist": "npm run test-ci; mkdir -p dist; export HEADER=\"/*! $(npm v . name) $(npm v . version) $(npm v . repository.url) @license $(npm v . license) */\"; npm run browserify; npm run uglify",
+    "uglify": "uglifyjs dist/markdown-it-replace-link.js -b beautify=false,ascii-only=true -c -m --preamble \"$HEADER\" > dist/markdown-it-replace-link.min.js",
+    "coverage": "rm -rf coverage;istanbul cover node_modules/.bin/_mocha",
+    "test-ci": "istanbul cover ./node_modules/mocha/bin/_mocha --report lcovonly -- -R spec && cat ./coverage/lcov.info | coveralls && rm -rf ./coverage"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/martinheidegger/markdown-it-replace-link"
+  },
+  "keywords": [
+    "markdown",
+    "markdown-it",
+    "markdown-it-plugin"
+  ],
+  "author": "Martin Heidegger",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/martinheidegger/markdown-it-replace-link/issues"
+  },
+  "homepage": "https://github.com/martinheidegger/markdown-it-replace-link",
+  "devDependencies": {
+    "chai": "^2.3.0",
+    "coveralls": "^2.11.2",
+    "eslint": "^0.21.0",
+    "eslint-plugin-nodeca": "^1.0.3",
+    "istanbul": "^0.3.14",
+    "markdown-it": "^4.1.0",
+    "markdown-it-testgen": "^0.1.4",
+    "mocha": "^2.2.4"
+  },
+  "dependencies": {}
+}
