@@ -39,6 +39,9 @@ This will result in the link prefixed with the `http://me.com/` like:
 
 Both images and html links will be processed.
 
+If using this in a browser, the script will create a variable 
+`window.markdownitReplaceLink` that can be passed to `.use()`.
+
 ### Testing
 
 To run the tests use:
