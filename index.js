@@ -8,12 +8,25 @@ function replaceAttr(token, attrName, replace, env) {
     });
 }
 
-module.exports = function (md) {
+module.exports = function (md, opts) {
     md.core.ruler.after(
         'inline',
         'replace-link',
         function (state) {
-            var replace = md.options.replaceLink;
+            var replace = null;
+
+            // Use markdown options (default so far)
+            if (md.options.replaceLink && typeof md.options.replaceLink === 'function') {
+                replace = md.options.replaceLink;
+            }
+            // Alternatively use plugin options provided upon .use(..)
+            else if (opts && opts.replaceLink && typeof opts.replaceLink === 'function') {
+                replace = opts.replaceLink;
+            }
+            else {
+                return false;
+            }
+
             if (typeof replace === 'function') {
                 state.tokens.forEach(function (blockToken) {
                     if (blockToken.type === 'inline' && blockToken.children) {
@@ -24,9 +37,9 @@ module.exports = function (md) {
                             } else if (type === 'image') {
                                 replaceAttr(token, 'src', replace, state.env);
                             }
-                        }); 
+                        });
                     }
-                }); 
+                });
             }
             return false;
         }
