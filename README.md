@@ -48,3 +48,7 @@ To run the tests use:
 ```bash
 npm run test
 ```
+
+### License
+
+[MIT](./LICENSE)
