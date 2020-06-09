@@ -1,47 +1,43 @@
-'use strict';
-
-function replaceAttr(token, attrName, replace, env) {
-    token.attrs.forEach(function (attr) {
-        if (attr[0] === attrName) {
-            attr[1] = replace(attr[1], env, token);
-        }
-    });
+function replaceAttr (token, attrName, replace, env) {
+  token.attrs.forEach(function (attr) {
+    if (attr[0] === attrName) {
+      attr[1] = replace(attr[1], env, token)
+    }
+  })
 }
 
 module.exports = function (md, opts) {
-    md.core.ruler.after(
-        'inline',
-        'replace-link',
-        function (state) {
-            var replace = null;
+  md.core.ruler.after(
+    'inline',
+    'replace-link',
+    function (state) {
+      var replace
 
-            // Use markdown options (default so far)
-            if (md.options.replaceLink && typeof md.options.replaceLink === 'function') {
-                replace = md.options.replaceLink;
-            }
-            // Alternatively use plugin options provided upon .use(..)
-            else if (opts && opts.replaceLink && typeof opts.replaceLink === 'function') {
-                replace = opts.replaceLink;
-            }
-            else {
-                return false;
-            }
+      if (md.options.replaceLink && typeof md.options.replaceLink === 'function') {
+        // Use markdown options (default so far)
+        replace = md.options.replaceLink
+      } else if (opts && opts.replaceLink && typeof opts.replaceLink === 'function') {
+        // Alternatively use plugin options provided upon .use(..)
+        replace = opts.replaceLink
+      } else {
+        return false
+      }
 
-            if (typeof replace === 'function') {
-                state.tokens.forEach(function (blockToken) {
-                    if (blockToken.type === 'inline' && blockToken.children) {
-                        blockToken.children.forEach(function (token) {
-                            var type = token.type;
-                            if (type === 'link_open') {
-                                replaceAttr(token, 'href', replace, state.env);
-                            } else if (type === 'image') {
-                                replaceAttr(token, 'src', replace, state.env);
-                            }
-                        });
-                    }
-                });
-            }
-            return false;
-        }
-    );
-};
+      if (typeof replace === 'function') {
+        state.tokens.forEach(function (blockToken) {
+          if (blockToken.type === 'inline' && blockToken.children) {
+            blockToken.children.forEach(function (token) {
+              var type = token.type
+              if (type === 'link_open') {
+                replaceAttr(token, 'href', replace, state.env)
+              } else if (type === 'image') {
+                replaceAttr(token, 'src', replace, state.env)
+              }
+            })
+          }
+        })
+      }
+      return false
+    }
+  )
+}

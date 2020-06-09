@@ -1,11 +1,10 @@
-'use strict';
+/* eslint-env mocha */
+var path = require('path')
+var generate = require('markdown-it-testgen')
+var expect = require('chai').expect
+var fs = require('fs')
 
-var path = require('path');
-var generate = require('markdown-it-testgen');
-var expect = require('chai').expect;
-var fs = require('fs');
-
-describe('markdown-it-replace-link', function() {
+describe('markdown-it-replace-link', function () {
   var md = require('markdown-it')({
     html: true,
     linkify: true,
@@ -15,21 +14,21 @@ describe('markdown-it-replace-link', function() {
         return 'image/' + link
       }
       if (link === 'a') {
-        return env.x + link;
+        return env.x + link
       }
-      return "http://me.com/" + link;
+      return 'http://me.com/' + link
     }
-  }).use(require('../'));
-  generate(path.join(__dirname, 'fixtures/toc.txt'), md);
+  }).use(require('../'))
+  generate(path.join(__dirname, 'fixtures/toc.txt'), md)
 
-  it("Passes on env", function (done) {
+  it('Passes on env', function (done) {
     var html = md.render(fs.readFileSync(path.join(__dirname, 'fixtures/env.txt'), 'utf-8'), {
       x: 'test/'
     })
-    expect(html).to.equal("<p><a href=\"test/a\">Hello</a></p>\n");
-    done();
-  });
-});
+    expect(html).to.equal('<p><a href="test/a">Hello</a></p>\n')
+    done()
+  })
+})
 
 describe('markdown-it-replace-link w. plugin options', function () {
   var md = require('markdown-it')({
@@ -42,18 +41,18 @@ describe('markdown-it-replace-link w. plugin options', function () {
         return 'image/' + link
       }
       if (link === 'a') {
-        return env.x + link;
+        return env.x + link
       }
-      return "http://me.com/" + link;
+      return 'http://me.com/' + link
     }
-  });
-  generate(path.join(__dirname, 'fixtures/toc.txt'), md);
+  })
+  generate(path.join(__dirname, 'fixtures/toc.txt'), md)
 
-  it("Passes on env", function (done) {
+  it('Passes on env', function (done) {
     var html = md.render(fs.readFileSync(path.join(__dirname, 'fixtures/env.txt'), 'utf-8'), {
       x: 'test/'
     })
-    expect(html).to.equal("<p><a href=\"test/a\">Hello</a></p>\n");
-    done();
-  });
-});
+    expect(html).to.equal('<p><a href="test/a">Hello</a></p>\n')
+    done()
+  })
+})
