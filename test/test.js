@@ -3,26 +3,33 @@ var path = require('path')
 var generate = require('markdown-it-testgen')
 var expect = require('chai').expect
 var fs = require('fs')
+var fixtures = {
+  env: fs.readFileSync(path.join(__dirname, 'fixtures/env.txt'), 'utf-8'),
+  tocPath: path.join(__dirname, 'fixtures/toc.txt')
+}
+var mdReplaceLink = require('../')
+
+function replaceLink (link, env, token) {
+  if (token.type === 'image') {
+    return 'image/' + link
+  }
+  if (link === 'a') {
+    return env.x + link
+  }
+  return 'http://me.com/' + link
+}
 
 describe('markdown-it-replace-link', function () {
   var md = require('markdown-it')({
     html: true,
     linkify: true,
     typography: true,
-    replaceLink: function (link, env, token) {
-      if (token.type === 'image') {
-        return 'image/' + link
-      }
-      if (link === 'a') {
-        return env.x + link
-      }
-      return 'http://me.com/' + link
-    }
-  }).use(require('../'))
-  generate(path.join(__dirname, 'fixtures/toc.txt'), md)
+    replaceLink: replaceLink
+  }).use(mdReplaceLink)
+  generate(fixtures.tocPath, md)
 
   it('Passes on env', function (done) {
-    var html = md.render(fs.readFileSync(path.join(__dirname, 'fixtures/env.txt'), 'utf-8'), {
+    var html = md.render(fixtures.env, {
       x: 'test/'
     })
     expect(html).to.equal('<p><a href="test/a">Hello</a></p>\n')
@@ -35,21 +42,13 @@ describe('markdown-it-replace-link w. plugin options', function () {
     html: true,
     linkify: true,
     typography: true
-  }).use(require('../'), {
-    replaceLink: function (link, env, token) {
-      if (token.type === 'image') {
-        return 'image/' + link
-      }
-      if (link === 'a') {
-        return env.x + link
-      }
-      return 'http://me.com/' + link
-    }
+  }).use(mdReplaceLink, {
+    replaceLink: replaceLink
   })
-  generate(path.join(__dirname, 'fixtures/toc.txt'), md)
+  generate(fixtures.tocPath, md)
 
   it('Passes on env', function (done) {
-    var html = md.render(fs.readFileSync(path.join(__dirname, 'fixtures/env.txt'), 'utf-8'), {
+    var html = md.render(fixtures.env, {
       x: 'test/'
     })
     expect(html).to.equal('<p><a href="test/a">Hello</a></p>\n')
