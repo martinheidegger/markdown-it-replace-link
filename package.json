@@ -24,10 +24,9 @@
   },
   "homepage": "https://github.com/martinheidegger/markdown-it-replace-link",
   "devDependencies": {
-    "markdown-it": "*",
+    "markdown-it": "^13.0.1",
     "markdown-it-testgen": "*",
-    "mocha": "^7.2.0",
-    "standard": "*"
-  },
-  "dependencies": {}
+    "mocha": "^10.2.0",
+    "standard": "^17.0.0"
+  }
 }

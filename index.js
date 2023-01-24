@@ -11,7 +11,7 @@ module.exports = function (md, opts) {
     'inline',
     'replace-link',
     function (state) {
-      var replace
+      let replace
 
       if (md.options.replaceLink && typeof md.options.replaceLink === 'function') {
         // Use markdown options (default so far)
@@ -27,7 +27,7 @@ module.exports = function (md, opts) {
         state.tokens.forEach(function (blockToken) {
           if (blockToken.type === 'inline' && blockToken.children) {
             blockToken.children.forEach(function (token) {
-              var type = token.type
+              const type = token.type
               if (type === 'link_open') {
                 replaceAttr(token, 'href', replace, state.env)
               } else if (type === 'image') {
