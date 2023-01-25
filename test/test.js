@@ -10,9 +10,12 @@ const fixtures = {
 }
 const mdReplaceLink = require('../')
 
-function replaceLink (link, env, token) {
+function replaceLink (link, env, token, htmlToken) {
   if (token.type === 'image') {
     return 'image/' + link
+  }
+  if (htmlToken && htmlToken.name === 'img') {
+    return 'html-image/' + link
   }
   if (link === 'a') {
     return env.x + link
@@ -71,6 +74,24 @@ describe('markdown-it-replace-link issue6', function () {
       x: 'test/'
     })
     expect(html).to.equal('<center>![](~/35)\n<center><img src="xxx">\n<p><img src="image/xxx" alt="altPath"></p>\n')
+    done()
+  })
+})
+
+describe('markdown-it-replace-link html support', function () {
+  const md = require('markdown-it')({
+    html: true,
+    linkify: true,
+    typography: true
+  }).use(mdReplaceLink, {
+    processHTML: true,
+    replaceLink
+  })
+
+  it('works with mixed html code as expected', function (done) {
+    expect(md.render('[![hello](img)](world)')).to.equal('<p><a href="http://me.com/world"><img src="image/img" alt="hello"></a></p>\n')
+    expect(md.render('<center><a href="hi"><img src="ho"></a></center>')).to.equal('<center><a href="http://me.com/hi"><img src="html-image/ho"></a></center>')
+    expect(md.render('<a href="hi"><img src="ho"></a>')).to.equal('<p><a href="http://me.com/hi"></a><img src="html-image/ho"></p>\n')
     done()
   })
 })

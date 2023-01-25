@@ -8,10 +8,15 @@
 
 ```js
 var md = require('markdown-it')({
-    replaceLink: function (link, env) {
+    html: true,
+    linkify: true
+})
+.use(require('markdown-it-replace-link'), {
+    processHTML: true, // defaults to false for backwards compatibility
+    replaceLink: function (link, env, token, htmlToken) {
         return link + "?c=" + Date.now();
     }
-}).use(require('markdown-it-replace-link')); // <-- this use(package_name) is required
+})
 ```
 
 #### Example
@@ -24,7 +29,7 @@ and use this
 
 ```js
 var md = require('markdown-it')({
-    replaceLink: function (link, env) {
+    replaceLink: function (link, env, token, htmlToken) {
         return "http://me.com/" + link;
     }
 }).use(require('markdown-it-replace-link'));
