@@ -1,6 +1,6 @@
 {
   "name": "markdown-it-replace-link",
-  "version": "1.2.0",
+  "version": "1.2.1",
   "description": "markdown-it plugin for replacing links (image & text) in the markdown document.",
   "main": "index.js",
   "scripts": {
