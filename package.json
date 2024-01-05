@@ -29,6 +29,10 @@
     "mocha": "^10.2.0",
     "standard": "^17.0.0"
   },
+  "peerDependencies": {
+    "@types/markdown-it": "*",
+    "markdown-it": "*"
+  },
   "optionalDependencies": {
     "dom-serializer": "^2.0.0",
     "htmlparser2": "^8.0.1"
