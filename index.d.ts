@@ -4,15 +4,15 @@ import type { Token } from 'markdown-it';
 import type { ChildNode } from 'domhandler';
 
 export interface ReplaceLinkOptions {
-  replaceLink(
+  replaceLink?(
     link: string,
     env: { [key: string]: unknown },
     token: Token,
     node: ChildNode
   ): string;
-  processHTML: boolean;
+  processHTML?: boolean;
 }
 
-function markdownItReplaceLink(md: MarkdownIt, opts: ReplaceLinkOptions): void;
+function markdownItReplaceLink(md: MarkdownIt, opts?: ReplaceLinkOptions): void;
 
-exports = markdownItReplaceLink;
+export = markdownItReplaceLink;
